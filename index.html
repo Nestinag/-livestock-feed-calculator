@@ -5,19 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Livestock Feed Calculator</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
-<img src="file_000000005e7461f8aa0ed8fd9eb664a6.png" alt="Company Logo" style="max-width: 200px; display: block; margin: 0 auto 20px;">
-    label { display: block; margin-top: 10px; }
-    input, select, button { width: 100%; padding: 8px; margin-top: 5px; }
-    #result { margin-top: 20px; padding: 10px; background: #f0f0f0; }
-    h3 { color: #0056b3; }
-    img { max-width: 150px; display: block; margin: 0 auto; }
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    img.logo {
+      max-width: 200px;
+      display: block;
+      margin: 0 auto 20px;
+    }
+    h2, h3 {
+      color: #0056b3;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      background-color: #0056b3;
+      color: white;
+      border: none;
+      margin-top: 15px;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f0f0f0;
+      border-left: 5px solid #0056b3;
+    }
   </style>
 </head>
 <body>
-  <img src="logo.png" alt="Company Logo">
+
+  <img src="file_000000005e7461f8aa0ed8fd9eb664a6.png" alt="Company Logo" class="logo">
+
   <h2>Livestock Feed Calculator</h2>
-  
+
   <label for="animal">Animal Type:</label>
   <select id="animal">
     <option value="cattle">Cattle</option>
@@ -63,7 +95,47 @@
   </ul>
 
   <script>
-    // Your calculator script here...
+    function calculateFeed() {
+      const animal = document.getElementById('animal').value;
+      const count = parseFloat(document.getElementById('count').value);
+      const duration = parseFloat(document.getElementById('duration').value);
+      const goal = document.getElementById('goal').value;
+      const baleWeight = parseFloat(document.getElementById('baleWeight').value);
+      const inventory = parseFloat(document.getElementById('inventory').value);
+
+      if (isNaN(count) || isNaN(duration) || isNaN(baleWeight) || isNaN(inventory)) {
+        document.getElementById('result').innerHTML = "Please fill in all fields with valid numbers.";
+        return;
+      }
+
+      const feedNeeds = {
+        cattle: 30,
+        horse: 25,
+        goat: 5,
+        sheep: 4,
+      };
+
+      let dailyFeed = feedNeeds[animal];
+
+      if (goal === 'bulk') {
+        dailyFeed *= 1.15;
+      } else if (goal === 'slim') {
+        dailyFeed *= 0.85;
+      }
+
+      const totalFeed = dailyFeed * count * duration;
+      const balesNeeded = totalFeed / baleWeight;
+      const balesShort = balesNeeded - inventory;
+
+      let resultText = `Total feed required: ${totalFeed.toFixed(2)} lbs.<br>`;
+      resultText += `Bales needed: ${balesNeeded.toFixed(2)} bales.<br>`;
+      resultText += balesShort > 0
+        ? `You are short by: ${balesShort.toFixed(2)} bales.`
+        : `You have enough feed. Extra bales: ${Math.abs(balesShort).toFixed(2)}.`;
+
+      document.getElementById('result').innerHTML = resultText;
+    }
   </script>
+
 </body>
 </html>
