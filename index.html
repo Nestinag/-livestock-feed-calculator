@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Livestock Feed Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+    label { display: block; margin-top: 10px; }
+    input, select, button { width: 100%; padding: 8px; margin-top: 5px; }
+    #result { margin-top: 20px; padding: 10px; background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <h2>Livestock Feed Calculator</h2>
+
+  <label for="animal">Animal Type:</label>
+  <select id="animal">
+    <option value="cattle">Cattle</option>
+    <option value="horse">Horse</option>
+    <option value="goat">Goat</option>
+    <option value="sheep">Sheep</option>
+  </select>
+
+  <label for="count">Number of Animals:</label>
+  <input type="number" id="count" min="1">
+
+  <label for="duration">Feeding Duration (days):</label>
+  <input type="number" id="duration" min="1">
+
+  <label for="goal">Body Condition Goal:</label>
+  <select id="goal">
+    <option value="maintain">Maintain</option>
+    <option value="bulk">Bulk</option>
+    <option value="slim">Slim</option>
+  </select>
+
+  <label for="baleWeight">Bale Weight (lbs):</label>
+  <input type="number" id="baleWeight" value="1000">
+
+  <label for="inventory">Feed Inventory on Hand (bales):</label>
+  <input type="number" id="inventory" min="0">
+
+  <button onclick="calculateFeed()">Calculate Feed Needs</button>
+
+  <div id="result"></div>
+
+  <script>
+    const intakeRates = {
+      cattle: 30,
+      horse: 25,
+      goat: 5,
+      sheep: 4
+    };
+
+    const goalFactors = {
+      maintain: 1.0,
+      bulk: 1.15,
+      slim: 0.85
+    };
+
+    function calculateFeed() {
+      const animal = document.getElementById('animal').value;
+      const count = parseInt(document.getElementById('count').value);
+      const duration = parseInt(document.getElementById('duration').value);
+      const goal = document.getElementById('goal').value;
+      const baleWeight = parseFloat(document.getElementById('baleWeight').value);
+      const inventory = parseInt(document.getElementById('inventory').value);
+
+      const dmi = intakeRates[animal] * goalFactors[goal];
+      const totalFeedNeeded = count * dmi * duration; // lbs
+      const balesNeeded = totalFeedNeeded / baleWeight;
+      const balesShort = balesNeeded - inventory;
+
+      let resultText = `Total feed required: ${totalFeedNeeded.toFixed(0)} lbs\n`;
+      resultText += `Equivalent to ${balesNeeded.toFixed(1)} bales\n`;
+      resultText += balesShort > 0 
+        ? `You need ${balesShort.toFixed(1)} more bales.`
+        : `You have enough feed. Surplus: ${Math.abs(balesShort).toFixed(1)} bales.`;
+
+      document.getElementById('result').innerText = resultText;
+    }
+  </script>
+</body>
+</html>
