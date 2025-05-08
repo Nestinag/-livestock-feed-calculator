@@ -9,11 +9,14 @@
     label { display: block; margin-top: 10px; }
     input, select, button { width: 100%; padding: 8px; margin-top: 5px; }
     #result { margin-top: 20px; padding: 10px; background: #f0f0f0; }
+    h3 { color: #0056b3; }
+    img { max-width: 150px; display: block; margin: 0 auto; }
   </style>
 </head>
 <body>
+  <img src="logo.png" alt="Company Logo">
   <h2>Livestock Feed Calculator</h2>
-
+  
   <label for="animal">Animal Type:</label>
   <select id="animal">
     <option value="cattle">Cattle</option>
@@ -45,41 +48,21 @@
 
   <div id="result"></div>
 
+  <h3>Our Goal</h3>
+  <p>Our goal is to provide high-quality forage and hay to support healthy, well-fed livestock. We believe that quality feed leads to healthier animals and more productive farms.</p>
+
+  <h3>Why Forages Are the Best Feed for Livestock</h3>
+  <p>Forages are the most natural and nutritious feed for livestock, providing essential nutrients, fiber, and energy. High-quality hay and pasture grass help support digestive health, enhance animal growth, and ensure a sustainable and cost-effective feeding solution. By choosing forage, you’re promoting better health and productivity for your animals.</p>
+
+  <h3>Contact Us</h3>
+  <p>If you have any questions or need a quote, feel free to reach out:</p>
+  <ul>
+    <li><strong>Email:</strong> <a href="mailto:Nestin@eganrangeag.com">Nestin@eganrangeag.com</a></li>
+    <li><strong>Phone:</strong> 845-399-3540</li>
+  </ul>
+
   <script>
-    const intakeRates = {
-      cattle: 30,
-      horse: 25,
-      goat: 5,
-      sheep: 4
-    };
-
-    const goalFactors = {
-      maintain: 1.0,
-      bulk: 1.15,
-      slim: 0.85
-    };
-
-    function calculateFeed() {
-      const animal = document.getElementById('animal').value;
-      const count = parseInt(document.getElementById('count').value);
-      const duration = parseInt(document.getElementById('duration').value);
-      const goal = document.getElementById('goal').value;
-      const baleWeight = parseFloat(document.getElementById('baleWeight').value);
-      const inventory = parseInt(document.getElementById('inventory').value);
-
-      const dmi = intakeRates[animal] * goalFactors[goal];
-      const totalFeedNeeded = count * dmi * duration; // lbs
-      const balesNeeded = totalFeedNeeded / baleWeight;
-      const balesShort = balesNeeded - inventory;
-
-      let resultText = `Total feed required: ${totalFeedNeeded.toFixed(0)} lbs\n`;
-      resultText += `Equivalent to ${balesNeeded.toFixed(1)} bales\n`;
-      resultText += balesShort > 0 
-        ? `You need ${balesShort.toFixed(1)} more bales.`
-        : `You have enough feed. Surplus: ${Math.abs(balesShort).toFixed(1)} bales.`;
-
-      document.getElementById('result').innerText = resultText;
-    }
+    // Your calculator script here...
   </script>
 </body>
 </html>
